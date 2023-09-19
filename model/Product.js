@@ -3,7 +3,7 @@ const { Schema } = mongoose; //Schema func helps to create a schema for the data
 
 //structure of the product data
 const productSchema = new Schema({
-  title: { type: String, required: true },
+  title: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   price: {
     type: Number,
@@ -29,6 +29,23 @@ const productSchema = new Schema({
   deleted: { type: Boolean, required: true },
 });
 
+//virtual creation
+const virtual = productSchema.virtual("id"); //virtual properties\
+
+//get the property
+virtual.get(() => {
+  return this._id;
+});
+
+//to set the virtual property
+productSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (doc, ret) => {
+    delete ret._id;
+  },
+});
+
 //exporting the model of the schema
-exports.productSchema = mongoose.model("Product", productSchema); //first argument is the name in db and
+exports.Product = mongoose.model("Product", productSchema); //first argument is the name in db and
 // second is the structure, we created

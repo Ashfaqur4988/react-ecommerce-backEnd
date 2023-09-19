@@ -1,10 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { createProduct } = require("./controller/Product");
+const productsRouters = require("./routes/Products"); //'/products' is the base path
 const app = express();
 
 //middlewares
 app.use(express.json()); //to parse req.body
+app.use("/products", productsRouters.router);
 
 //db connection
 try {
@@ -18,9 +19,6 @@ try {
 app.get("/", (req, res) => {
   res.json({ Status: "Success" });
 });
-
-//for post request of creating a product
-app.post("/products", createProduct);
 
 //listener code to run the server
 app.listen(8080, (req, res) => {

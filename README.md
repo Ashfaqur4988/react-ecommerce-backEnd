@@ -31,3 +31,15 @@ created Controller folder where the CRUD operations of the models will be
 
 inside Model: product js file contains the schema, structure of the collections (tables)
 inside Controller: the actions to create read update and delete operations
+
+VIRTUAL: this is calculated at the run time to get some virtual fields which we need to send in the frontend
+
+Routes folder: to attach a particular controller to any path / endpoint
+we exported it to the index js where it will be used as middleware
+
+-> Replicate all the api in the productApi into this backend
+
+1. fetchAllProductsByFIlter is written as fetchAllProducts in controller, where all the query strings are provided and we run the exec function to execute it
+   then we chained the path in the route folder, products file .get("/", fetchAllProduct)
+   made another query for total count, replicating it in every other query then at the end shall count the total from it
+   sending the header X-Total-Count
