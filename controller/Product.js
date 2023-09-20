@@ -1,11 +1,33 @@
 const { Product } = require("../model/Product");
 
-//create a new product
-exports.createProduct = async (req, res) => {
+//update a product
+exports.updateProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const doc = await Product.findByIdAndUpdate(id, req.body, { new: true }); //for patch methods
+    res.status(201).json(doc);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+//product by id
+exports.fetchProductById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+//create product
+exports.addProduct = async (req, res) => {
   //creating an instance of the Product from the model folder
   const product = new Product(req.body);
-  //saving the product
   try {
+    //saving the product
     const doc = await product.save();
     res.status(201).json(doc);
   } catch (error) {
@@ -37,6 +59,7 @@ exports.fetchAllProduct = async (req, res) => {
   }
 
   //sorting query
+  //TODO: sorting should be from the discounted value
   if (req.query._sort && req.query._order) {
     //sort object = {_sort: "price", _order:"desc"}
     query = query.sort({ [req.query._sort]: req.query._order });
@@ -59,7 +82,6 @@ exports.fetchAllProduct = async (req, res) => {
       .skip(pageSize * (page - 1))
       .limit(pageSize);
   }
-
   //saving the product
   try {
     const docs = await query.exec(); //to execute the get method

@@ -38,8 +38,30 @@ Routes folder: to attach a particular controller to any path / endpoint
 we exported it to the index js where it will be used as middleware
 
 -> Replicate all the api in the productApi into this backend
+-> Every CONTROLLER needs to be attached with a Route
+
+Cross-origin resource sharing (CORS) is a browser mechanism which enables controlled access to resources located outside of a given domain. (pagination problem solved by exposing headers in cors func)
+
+-> Product M & C
 
 1. fetchAllProductsByFIlter is written as fetchAllProducts in controller, where all the query strings are provided and we run the exec function to execute it
    then we chained the path in the route folder, products file .get("/", fetchAllProduct)
    made another query for total count, replicating it in every other query then at the end shall count the total from it
    sending the header X-Total-Count
+2. fetchProductById (to get the id we used req.params, it is a feature in express that will give us the parameter from the url)
+3. updateProduct, findByIdAndUpdate(id, req.body, {new: true}) for patch method, new:true is to get the latest document
+4. addProduct, req.body to get the data & use .save() function
+
+-> Category M & C
+inside the Controller, write the api for categories and added in the index js
+
+1. fetchAllCategories
+2. createCategories (post method) use .save() function
+
+-> Brand M & C
+inside the Controller, write the api for brands and added in the index js
+
+1. fetchAllBrands
+2. createBrands (post method) use .save() function
+
+Using Mongo db compass GUI we imported all the product, brand & category data (generally this process will bypass the mongoose schema so we should not use it)
