@@ -65,3 +65,16 @@ inside the Controller, write the api for brands and added in the index js
 2. createBrands (post method) use .save() function
 
 Using Mongo db compass GUI we imported all the product, brand & category data (generally this process will bypass the mongoose schema so we should not use it)
+
+-> User M & C
+Schema.Types.Mixed is a data type which is used to denote different data types in mongoose
+
+1. fetchLoggedInUser, use findById and use projection to send only required data (not send password or sensitive data) for now sending all data
+2. fetchLoggedInUserOrders
+3. updateUser
+
+->Auth only Controller & Routes
+this will work on user model but only for Authentication
+
+1. createUser, change the endpoint to auth in base path and /signup in router file from users
+2. checkUser, User.findOne({search property}), //TODO: temporary for now

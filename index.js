@@ -1,10 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const app = express();
+
 const productsRouters = require("./routes/Products"); //'/products' is the base path
 const brandsRouters = require("./routes/Brands");
 const categoryRouters = require("./routes/Categories");
-const cors = require("cors");
-const app = express();
+const userRouters = require("./routes/User");
+const authRouters = require("./routes/Auth");
 
 //middlewares
 app.use(
@@ -16,6 +19,8 @@ app.use(express.json()); //to parse req.body
 app.use("/products", productsRouters.router);
 app.use("/brands", brandsRouters.router);
 app.use("/category", categoryRouters.router);
+app.use("/users", userRouters.router);
+app.use("/auth", authRouters.router);
 
 //db connection
 try {
