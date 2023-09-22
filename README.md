@@ -78,3 +78,10 @@ this will work on user model but only for Authentication
 
 1. createUser, change the endpoint to auth in base path and /signup in router file from users
 2. checkUser, User.findOne({search property}), //TODO: temporary for now
+
+->Cart M, C routes
+model: reference to the Product schema & reference to the User schema in product & user field respectively, quantity field will be a value
+
+1. addToCart, post request, create new cart and fill the req.body with id of selected product, using populate here (populate = product), when we add an item to the cart we want the product field to be populated along the addition
+2. fetchItemsById, populated the product field by the provided id and fetch the value (get), using populate here (populate = product)
+   \*\*need to change in frontend for the reference because we stored everything in a flat manner in the frontEnd

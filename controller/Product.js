@@ -70,7 +70,7 @@ exports.fetchAllProduct = async (req, res) => {
 
   //total count
   const totalDocs = await totalProductQuery.count().exec();
-  console.log({ totalDocs });
+  // console.log({ totalDocs });
 
   //pagination is also in the query
   if (req.query._page && req.query._limit) {
