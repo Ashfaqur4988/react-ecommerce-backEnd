@@ -85,3 +85,16 @@ model: reference to the Product schema & reference to the User schema in product
 1. addToCart, post request, create new cart and fill the req.body with id of selected product, using populate here (populate = product), when we add an item to the cart we want the product field to be populated along the addition
 2. fetchItemsById, populated the product field by the provided id and fetch the value (get), using populate here (populate = product)
    \*\*need to change in frontend for the reference because we stored everything in a flat manner in the frontEnd
+3. updateCart, patch request, working fine, need to populate the result and after that send it
+
+->Order M, C & routes
+model:
+
+1. addOrder,
+2. fetchAllOrders,
+3. fetchLoggedInUserOrders,
+4. updateOrders
+
+\*\*fixing some small errors:
+in fetch product showing only products where deleted is not equals to true
+order model change, items is object not array of mixed types

@@ -8,7 +8,7 @@ const userSchema = new Schema({
   addresses: { type: [Schema.Types.Mixed] },
   //todo: we can make a separate schema for this address field
   name: { type: String },
-  order: { type: [Schema.Types.Mixed] },
+  // order: { type: [Schema.Types.Mixed] },
 });
 
 //virtual creation

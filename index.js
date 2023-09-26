@@ -9,6 +9,7 @@ const categoryRouters = require("./routes/Categories");
 const userRouters = require("./routes/User");
 const authRouters = require("./routes/Auth");
 const cartRouters = require("./routes/Cart");
+const orderRouters = require("./routes/Order");
 
 //middlewares
 app.use(
@@ -23,6 +24,7 @@ app.use("/category", categoryRouters.router);
 app.use("/users", userRouters.router);
 app.use("/auth", authRouters.router);
 app.use("/cart", cartRouters.router);
+app.use("/orders", orderRouters.router);
 
 //db connection
 try {

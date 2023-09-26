@@ -10,8 +10,6 @@ exports.fetchLoggedInUser = async (req, res) => {
   }
 };
 
-exports.fetchLoggedInUserOrders = async (req, res) => {};
-
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
   try {

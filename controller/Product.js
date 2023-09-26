@@ -38,9 +38,9 @@ exports.addProduct = async (req, res) => {
 //fetch product by filters sort and pagination
 exports.fetchAllProduct = async (req, res) => {
   //need all query strings to fetch the data
-  let query = Product.find({});
+  let query = Product.find({ deleted: { $ne: true } });
   //for total count
-  let totalProductQuery = Product.find({});
+  let totalProductQuery = Product.find({ deleted: { $ne: true } });
 
   //category is also in the query
   if (req.query.category) {
