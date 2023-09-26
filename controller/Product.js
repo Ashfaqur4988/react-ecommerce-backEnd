@@ -37,10 +37,14 @@ exports.addProduct = async (req, res) => {
 
 //fetch product by filters sort and pagination
 exports.fetchAllProduct = async (req, res) => {
+  let condition = {};
+  if (!req.query.admin) {
+    condition.deleted = { $ne: true };
+  }
   //need all query strings to fetch the data
-  let query = Product.find({ deleted: { $ne: true } });
+  let query = Product.find(condition);
   //for total count
-  let totalProductQuery = Product.find({ deleted: { $ne: true } });
+  let totalProductQuery = Product.find(condition);
 
   //category is also in the query
   if (req.query.category) {

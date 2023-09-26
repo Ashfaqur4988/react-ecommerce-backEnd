@@ -94,7 +94,10 @@ model:
 2. fetchAllOrders,
 3. fetchLoggedInUserOrders,
 4. updateOrders
+5. fetchAllOrders
 
 \*\*fixing some small errors:
 in fetch product showing only products where deleted is not equals to true
 order model change, items is object not array of mixed types
+
+to avoid same routes endpoints we changed the user order endpoint to orders/user/userId
