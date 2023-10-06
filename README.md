@@ -77,7 +77,7 @@ Schema.Types.Mixed is a data type which is used to denote different data types i
 this will work on user model but only for Authentication
 
 1. createUser, change the endpoint to auth in base path and /signup in router file from users
-2. checkUser, User.findOne({search property}), //TODO: temporary for now
+2. login, User.findOne({search property}), //TODO: temporary for now
 
 ->Cart M, C routes
 model: reference to the Product schema & reference to the User schema in product & user field respectively, quantity field will be a value
@@ -101,3 +101,45 @@ in fetch product showing only products where deleted is not equals to true
 order model change, items is object not array of mixed types
 
 to avoid same routes endpoints we changed the user order endpoint to orders/user/userId
+
+admin login condition added so that the admin and the user do not get the same view -> in fetchAllProduct controller
+
+PASSPORT.js -> to isolate authentication state, referred to as a login session, from other state that may be stored in the session. (npm i passport)
+
+express-session -> to maintain sessions (npm i express-session), install passport-local for local strategy
+
+in index.js -> adding the passport authentication middleware, session and passport-local strategy in middleware
+copying the login / check user code inside the local strategies and removing it in the auth controller, instead return json with req.user, which is an object created after passport authorization
+in auth route add passport.authenticate('local'[strategy name]) before login function
+
+session ends whenever the server refreshes
+
+accessing the data saved in session after logging in we can use req.user created by the passport serializer
+
+encrypting / hashing password:
+require crypto and inside the signUp function make salt variable then used the standard encryption template code to salt and hash the password then make the user and save it
+
+reading and matching the password while login:
+used the same encrypting standard template for checking the password
+arguments -> user.salt - use the same salt for decrypting, password will be the one from passport, added a new if statement from passport documentation for decrypting and passing user.password which is already saved in user db and hashedPassword
+
+services folder => common.js file:
+this will contain all the common functions which we shall be using
+
+1. isAuth is a middleware function which will only allow to go to the next action if and only if the user is logged in (req.user is created by serializer of passport), so we use this in the routes to keep it protected
+2. sanitizeUser -> it will return user id and role (we will user this in various parts where user is getting send after success)
+
+\*\*after sign up by default a session is not created so we need to put a line from the documentation that will create a session right after the sign up is done -> req.login(), this also calls the serializer
+
+with the session we get a cookie which contains a small data of our session, this is used in the react authentication and it sends the stored small data through all the req, res cycle and will help us in maintaining sessions between frontend and backend
+
+setting up jwt, jwt -> self-contained way for securely transmitting information between parties as a JSON object.
+make const of jwtStrategy (already present in the docs of passport jwt strategy) and ExtractJWT and require it
+const opts from the docs copy pasted the code (explain later)
+client-only auth
+
+make jwt strategy just below the location strategy
+added the jwt in the check route of our authjs
+make a token -> install jsonwebtoken package, jwt.sign({payload, secret_key}) [payload -> some important user information]
+
+adding jwt strategy in our isAuth function and calling it our routes in index file

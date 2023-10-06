@@ -1,31 +1,44 @@
 const { User } = require("../model/User");
+const crypto = require("crypto"); //in built salt provider
+const { sanitizeUser } = require("../services/common");
+const secret_key = "secret";
+const jwt = require("jsonwebtoken");
 
 exports.createUser = async (req, res) => {
-  const user = new User(req.body);
   try {
-    const doc = await user.save();
-    res.status(201).json({ id: doc.id, role: doc.role, email: doc.email });
+    const salt = crypto.randomBytes(16); //salt for covering the password
+    //function for encrypting the password
+    crypto.pbkdf2(
+      req.body.password,
+      salt,
+      310000,
+      32,
+      "sha256",
+      async function (err, hashedPassword) {
+        const user = new User({ ...req.body, password: hashedPassword, salt }); //saving the encrypted password
+        const doc = await user.save();
+
+        req.login(sanitizeUser(doc), (err) => {
+          //this also calls the serializer
+          if (err) {
+            res.status(400).json(err);
+          } else {
+            const token = jwt.sign(sanitizeUser(user), secret_key);
+            res.status(201).json(token);
+          }
+        });
+      }
+    );
   } catch (error) {
     res.status(400).json(error);
   }
 };
 
+exports.login = async (req, res) => {
+  res.json(req.user); //req.user is a special object which is created by passport after authentication
+};
+
+//call this function independently
 exports.checkUser = async (req, res) => {
-  try {
-    //within quotes the projection, till what we need to provide
-    const user = await User.findOne({ email: req.body.email }).exec();
-    //TEMPORARY check
-    if (!user) {
-      res.status(401).json({ message: "No such user!" });
-    } else if (user.password === req.body.password) {
-      res.status(200).json({
-        id: user.id,
-        role: user.role,
-      });
-    } else {
-      res.status(401).json({ message: "invalid credential" });
-    }
-  } catch (error) {
-    res.status(400).json(error);
-  }
+  res.json({ status: "success", user: req.user }); //req.user is a special object which is created by passport after authentication
 };

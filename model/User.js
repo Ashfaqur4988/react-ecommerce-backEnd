@@ -3,11 +3,12 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: Buffer, required: true },
   role: { type: String, required: true, default: "user" },
   addresses: { type: [Schema.Types.Mixed] },
   //todo: we can make a separate schema for this address field
   name: { type: String },
+  salt: Buffer,
   // order: { type: [Schema.Types.Mixed] },
 });
 
