@@ -62,12 +62,13 @@ passport.use(
   new LocalStrategy(
     //by default passport uses username
     { usernameField: "email" },
-    async function (username, password, done) {
+    async function (email, password, done) {
       try {
-        const user = await User.findOne({ email: username }).exec();
+        const user = await User.findOne({ email: email }).exec();
+        console.log(email, password, user);
 
         if (!user) {
-          done(null, false, { message: "No such user" }); //when no such user found
+          return done(null, false, { message: "No such user" }); //when no such user found
         }
 
         crypto.pbkdf2(
@@ -81,7 +82,7 @@ passport.use(
               return done(null, false, { message: "invalid credentials" }); //when wrong credentials
             }
             const token = jwt.sign(sanitizeUser(user), secret_key);
-            return done(null, token); //when user found
+            return done(null, { token }); //when user found, this line sends a serializer
           }
         );
       } catch (error) {

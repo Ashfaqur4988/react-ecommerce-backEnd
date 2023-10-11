@@ -143,3 +143,22 @@ added the jwt in the check route of our authjs
 make a token -> install jsonwebtoken package, jwt.sign({payload, secret_key}) [payload -> some important user information]
 
 adding jwt strategy in our isAuth function and calling it our routes in index file
+this JWT token has all the information about the user and only server can decode it
+jwt strategies are used when you want to authenticate a request with a token
+now if someone tries to access any protected page without sending their credentials then they get unauthorized as return value
+
+after changing in frontend:
+controller / cart -> fetchItemsByUserId, taking the user id from req.user (got after serializer and token has the user's info)
+\*\*same way, changing the frontend and the backend(user.id delete in frontend and req.user added in backend)
+controller / user -> fetchLoggedInUser, taking the user id from req.user (got after serializer and token has the user's info) also changed the name of the route to /own
+controller / cart -> addToCart, taking the user id from req.user (got after serializer and token has the user's info), new Cart {spread the req.body and add the user: id}
+
+delete user pwd and salt in the user controller fetchLoggedInUser so that we donot send all the user data, only required data should be sent
+
+\*\*ISSUE: regarding the token that we sent to the api through postman but not sending it from the frontend in every request so it is giving unauthorized
+to resolve this issue we need to store the token somewhere this is where the express-cookies comes into action
+install express-cookies
+send cookie in response helps us to save the cookie and in the consequent requests we can send it
+res.cookie('jwt', token, { expires: new Date(Date.now() + 900000), httpOnly: true }) -> jwt, then token (the one we created) and the expiry after how much time (in milliseconds)
+
+pasting the above code in login, createUser (these two are the only gateway to enter the app)

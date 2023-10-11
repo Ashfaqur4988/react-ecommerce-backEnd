@@ -24,7 +24,13 @@ exports.createUser = async (req, res) => {
             res.status(400).json(err);
           } else {
             const token = jwt.sign(sanitizeUser(user), secret_key);
-            res.status(201).json(token);
+            res
+              .cookie("jwt", token, {
+                expires: new Date(Date.now() + 3600000),
+                httpOnly: true,
+              })
+              .status(201)
+              .json(token);
           }
         });
       }
@@ -35,7 +41,13 @@ exports.createUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  res.json(req.user); //req.user is a special object which is created by passport after authentication
+  res
+    .cookie("jwt", req.user.token, {
+      expires: new Date(Date.now() + 3600000),
+      httpOnly: true,
+    })
+    .status(201)
+    .json(req.user.token); //req.user is a special object which is created by passport after authentication
 };
 
 //call this function independently

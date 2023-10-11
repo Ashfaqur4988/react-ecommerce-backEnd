@@ -1,7 +1,8 @@
 const { Cart } = require("../model/Cart");
 
 exports.addToCart = async (req, res) => {
-  const cart = new Cart(req.body);
+  const { id } = req.user;
+  const cart = new Cart({ ...req.body, user: id });
 
   try {
     const doc = await cart.save();
@@ -13,10 +14,10 @@ exports.addToCart = async (req, res) => {
 };
 
 exports.fetchItemsByUserId = async (req, res) => {
-  const { user } = req.query;
+  const { id } = req.user;
 
   try {
-    const cartItems = await Cart.find({ user: user }).populate("product"); //populate the product & user field with the given id
+    const cartItems = await Cart.find({ user: id }).populate("product"); //populate the product & user field with the given id
     res.status(200).json(cartItems);
   } catch (error) {
     res.status(400).json(error);
