@@ -6,9 +6,9 @@ const passport = require("passport"); //passport
 const LocalStrategy = require("passport-local").Strategy; //local strategy
 const app = express();
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const JwtStrategy = require("passport-jwt").Strategy; //jwt  strategy already present in passport
 const ExtractJwt = require("passport-jwt").ExtractJwt; // extract jwt from client request
-
 const productsRouters = require("./routes/Products"); //'/products' is the base path
 const brandsRouters = require("./routes/Brands");
 const categoryRouters = require("./routes/Categories");
@@ -18,17 +18,19 @@ const cartRouters = require("./routes/Cart");
 const orderRouters = require("./routes/Order");
 const { User } = require("./model/User");
 const crypto = require("crypto");
-const { isAuth, sanitizeUser } = require("./services/common");
+const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 
 const secret_key = "secret";
 
 //jwt options
 const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = secret_key; //TODO: should not be in code
 
 //middlewares
+app.use(express.static("build")); //for build
 
+app.use(cookieParser()); //cookie parser
 //session
 app.use(
   session({
@@ -98,7 +100,7 @@ passport.use(
   new JwtStrategy(opts, async function (jwt_payload, done) {
     console.log({ jwt_payload });
     try {
-      const user = await User.findOne({ id: jwt_payload.sub });
+      const user = await User.findById(jwt_payload.id);
       if (user) {
         return done(null, sanitizeUser(user)); //this calls serializer
       } else {

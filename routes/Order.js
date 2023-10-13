@@ -8,7 +8,7 @@ const {
 const router = express.Router();
 
 router
-  .get("/user/:userId", fetchLoggedInUserOrders)
+  .get("/own/", fetchLoggedInUserOrders)
   .post("/", createOrder)
   .patch("/:id", adminUpdateOrder)
   .get("/", fetchAllOrders);

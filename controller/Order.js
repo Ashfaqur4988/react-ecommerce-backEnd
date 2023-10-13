@@ -12,10 +12,10 @@ exports.createOrder = async (req, res) => {
 };
 
 exports.fetchLoggedInUserOrders = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
   try {
-    const orders = await Order.find(id);
-    res.status(201).json(orders);
+    const orders = await Order.find({ user: id });
+    res.status(200).json(orders);
   } catch (error) {
     res.status(400).json(error);
   }

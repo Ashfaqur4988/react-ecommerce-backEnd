@@ -162,3 +162,31 @@ send cookie in response helps us to save the cookie and in the consequent reques
 res.cookie('jwt', token, { expires: new Date(Date.now() + 900000), httpOnly: true }) -> jwt, then token (the one we created) and the expiry after how much time (in milliseconds)
 
 pasting the above code in login, createUser (these two are the only gateway to enter the app)
+
+we can see the jwt in headers (set cookie) of our dev tool of the browser but not saved, reason is cross origin
+so we will build the project and put it in the server
+npm run build (in the frontend part), a build folder will be created
+copy paste this inside the server
+we need to add cors middleware for cross origin resource sharing
+app.use(express.static("build"));
+now everything will be hosted on the 8080 port of local host
+
+but still no loading of products and cart as the api failed even though the token is sent
+we have sent the cookie through the bearerToken, this is wrong
+we need to extract the cookie through headers and extract it in the backend
+
+from passport docs got the cookie extractor function and paste it in the common file, exported it
+then in the index file we changed the opts.jwtFromRequest = cookieExtractor to this
+now we get the cookie from the extractor and save it in jwtFromRequest
+all this to work we need to install the cookie-parser and require it
+from cookie-parser we can get all the cookie from client side
+
+making the api independent of any external user ids, as we are getting all the details from the token:
+fetchLoggedInUserOrders, changed the id from req.params to req.user (JWT token) [made it independent]
+changed the endpoint to /own/
+also in frontend removed the id in the api and made it independent
+
+\*\*ISSUE:
+there was an issue which states that whenever we loggedIn from any user it always picked a random token
+solution: inside index, passport strategy we need to find the user by its id User.findById and the argument inside is the jwt_payload.id
+this resolves the issue

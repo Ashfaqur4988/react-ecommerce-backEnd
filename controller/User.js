@@ -4,9 +4,14 @@ exports.fetchLoggedInUser = async (req, res) => {
   const { id } = req.user;
   try {
     const user = await User.findById(id);
-    delete user.password; //so that we donot send all the user data
-    delete user.salt;
-    res.status(200).json(user);
+    res
+      .status(200)
+      .json({
+        id: user.id,
+        addresses: user.addresses,
+        email: user.email,
+        role: user.role,
+      });
   } catch (error) {
     res.status(400).json(error);
   }
