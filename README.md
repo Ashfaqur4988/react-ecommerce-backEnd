@@ -160,6 +160,10 @@ to resolve this issue we need to store the token somewhere this is where the exp
 install express-cookies
 send cookie in response helps us to save the cookie and in the consequent requests we can send it
 res.cookie('jwt', token, { expires: new Date(Date.now() + 900000), httpOnly: true }) -> jwt, then token (the one we created) and the expiry after how much time (in milliseconds)
+to see if the cookie is set, check set-cookie
+
+TO BYPASS THE CORS ISSUE IN DEV SERVER:
+just put the token in the token variable of cookieExtractor function
 
 pasting the above code in login, createUser (these two are the only gateway to enter the app)
 
@@ -190,3 +194,47 @@ also in frontend removed the id in the api and made it independent
 there was an issue which states that whenever we loggedIn from any user it always picked a random token
 solution: inside index, passport strategy we need to find the user by its id User.findById and the argument inside is the jwt_payload.id
 this resolves the issue
+
+Auth controller:
+checkAuth, this will just check whether the user is authenticated or not
+checkAuth is added in the routes
+
+in index and auth controller sending { id: user.id, role: user.role, token(index js file) } in place of token as response
+
+PAYMENT with STRIPE integration:
+make an account in stripe and go to react stripe docs
+npm install --save stripe to install in the backend
+stripe keys should be stored securely
+making a payment section in the index.js page, copy the code in the docs, paste it and modify
+removed unnecessary codes
+
+GO TO FRONTEND and SET UP THE REQUIRED CODE
+
+removed calculate total amount, we can get it from req body
+added our totalAmount directly from req.body and multiplied by hundred to manipulate and get the original amount
+
+get the payment acknowledgement, this is where the concept of WEBHOOKS come into play:
+read the docs and copy the code as it is, then go to the developers dashboard and create your webhook
+
+stripe donot allow webhooks in the dev env so we need to download the stripe CLI and then we can test it in dev
+
+install stripe cli and do the required procedures to get access and make a webHook in our server
+webHook: take the commands and run it in the terminal
+allow raw data (for testing)
+
+1. create an endpoint on your server that you can send data to when the customer has been charged by stripe
+2. set up webhook endpoints on your server with stripe
+3. configure webhooks using the dashboard or api keys from stripe
+4. add code to listen for events sent over HTTP POST requests coming from stripe
+5. handle these events
+6. respond back with status code 200 OK
+7. if everything goes well, stripe will keep sending those notifications forever (unless something changes)
+8. make sure your app handles duplicate payments gracefully
+9. test it out!
+
+a meta has been sent to the webhook by react for the confirmation with order id
+
+DOTENV file:
+to keep all our secret keys we need to make a .env file
+require it with .config()
+then put all the secret keys and critical data there and in place of then use process.env.NAME_OF_THE_KEYS

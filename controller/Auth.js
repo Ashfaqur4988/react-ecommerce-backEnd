@@ -30,7 +30,7 @@ exports.createUser = async (req, res) => {
                 httpOnly: true,
               })
               .status(201)
-              .json(token);
+              .json({ id: doc.id, role: doc.role });
           }
         });
       }
@@ -50,7 +50,11 @@ exports.login = async (req, res) => {
     .json(req.user.token); //req.user is a special object which is created by passport after authentication
 };
 
-//call this function independently
-exports.checkUser = async (req, res) => {
-  res.json({ status: "success", user: req.user }); //req.user is a special object which is created by passport after authentication
+//this will just check whether the user is authenticated or not
+exports.checkAuth = async (req, res) => {
+  if (req.user) {
+    res.json(req.user); //req.user is a special object which is created by passport after authentication
+  } else {
+    res.sendStatus(401);
+  }
 };
