@@ -190,3 +190,4 @@ also in frontend removed the id in the api and made it independent
 there was an issue which states that whenever we loggedIn from any user it always picked a random token
 solution: inside index, passport strategy we need to find the user by its id User.findById and the argument inside is the jwt_payload.id
 this resolves the issue
+change
