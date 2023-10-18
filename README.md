@@ -238,12 +238,3 @@ DOTENV file:
 to keep all our secret keys we need to make a .env file
 require it with .config()
 then put all the secret keys and critical data there and in place of then use process.env.NAME_OF_THE_KEYS
-
-SETTING UP THE PASSWORD RESET ISSUE:
-NODE MAILER shall be used
-npm install nodemailer and require it
-
-taking the code from the docs and change the transporter host to smtp, smtp is the protocol that we are going to use
-google and take the port and all detail of smtp
-if port 587 then the secure is false and port 465 then secure true
-add the user email and use the node 2 step verification app password(created) and save it in the env variable
