@@ -239,6 +239,28 @@ to keep all our secret keys we need to make a .env file
 require it with .config()
 then put all the secret keys and critical data there and in place of then use process.env.NAME_OF_THE_KEYS
 
+creating mongo cluster in mongo Atlas:
+paste the password in .env
+click on connect then Connecting with MongoDB Driver
+copy th db_url replace the password part and add the db name
+db_url paste it in the .env
+if not allowed accessing then make a new user and copy the token then by pass it
+now all items will be empty so we need to add then in the new cloud database
+for this mongo has given some tools but i used the the exporting and importing manually
+
+final testing of the app after integrating the cloud db
+
+now we need to replace the http://localhost:8080 with a simple slash, our routes will start from / (in frontend)
+
+we need to use the path package to set the path for build because directly putting path is not the best practice
+use the \_\_dirname server variable, It gives back the location of the current JavaScript file's folder
+then path.resolve(\_\_dirname,'build') [path resolve joins the directory and the build path]
+\_\_dirname is very useful because generally we dont know where the js folder may be in other project so this will help and pinpoint the exact location
+
+we shall remove the by pass of token from the common file
+
+make a vercel.json config file
+
 -----after deployment------------
 SETTING UP THE PASSWORD RESET ISSUE:
 NODE MAILER shall be used

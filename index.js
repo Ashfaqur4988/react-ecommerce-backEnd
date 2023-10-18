@@ -20,6 +20,7 @@ const cartRouters = require("./routes/Cart");
 const orderRouters = require("./routes/Order");
 const { User } = require("./model/User");
 const crypto = require("crypto");
+const path = require("path");
 const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 
 //jwt options
@@ -75,7 +76,7 @@ app.post(
 );
 
 //middlewares
-app.use(express.static("build")); //for build
+app.use(express.static(path.resolve(__dirname, "build"))); //for build
 
 app.use(cookieParser()); //cookie parser
 //session
