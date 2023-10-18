@@ -11,6 +11,7 @@ const cookieParser = require("cookie-parser");
 const JwtStrategy = require("passport-jwt").Strategy; //jwt  strategy already present in passport
 const ExtractJwt = require("passport-jwt").ExtractJwt; // extract jwt from client request
 const productsRouters = require("./routes/Products"); //'/products' is the base path
+const nodemailer = require("nodemailer"); //nodemailer
 const brandsRouters = require("./routes/Brands");
 const categoryRouters = require("./routes/Categories");
 const userRouters = require("./routes/User");
@@ -25,6 +26,32 @@ const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const opts = {};
 opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = process.env.JWT_SECRET_KEY;
+
+//send password reset mail
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+    user: "ashfakur1@gmail.com",
+    pass: process.env.MAILER_PASSWORD,
+  },
+});
+
+// async..await is not allowed in global scope, must use a wrapper
+async function main() {
+  // send mail with defined transport object
+  const info = await transporter.sendMail({
+    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    to: "bar@example.com, baz@example.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+}
 
 //webhook
 //TODO: we will capture the actual order after deploying out in our server
