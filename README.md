@@ -259,7 +259,13 @@ then path.resolve(\_\_dirname,'build') [path resolve joins the directory and the
 
 we shall remove the by pass of token from the common file
 
-make a vercel.json config file
+make a vercel.json config file and add all the configuration are added
+builds and paths should be declared there
+builds: src and use, should put the entry point (src) as index js and use @vercel/node and another for the build src build/\*\* and use @vercel/static
+routes: src should be the path and dest should be the file
+
+make a new repo in github so that we can use that to host our app in vercel
+create new repo
 
 -----after deployment------------
 SETTING UP THE PASSWORD RESET ISSUE:
