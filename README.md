@@ -266,6 +266,7 @@ routes: src should be the path and dest should be the file
 
 make a new repo in github so that we can use that to host our app in vercel
 create new repo
+now push the code in that new repo
 
 -----after deployment------------
 SETTING UP THE PASSWORD RESET ISSUE:
